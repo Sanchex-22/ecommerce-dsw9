@@ -4,3 +4,5 @@ node_modules/
 ca.pem
 *.log
 .DS_Store
+service.cert
+service.key
