@@ -1,7 +1,7 @@
 // models/index.js
-const Product   = require('./Product');
+const Product   = require('./Products');
 const Order     = require('./Order');
-const OrderItem = require('./OrderItem');
+const OrderItem = require('./OrderItems');
 
 Order.hasMany(OrderItem, { foreignKey: 'OrderId',    onDelete: 'CASCADE' });
 OrderItem.belongsTo(Order,   { foreignKey: 'OrderId' });
