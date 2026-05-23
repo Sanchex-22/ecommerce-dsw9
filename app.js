@@ -66,3 +66,4 @@ sequelize.sync({ alter: true })
     console.error('Error al sincronizar BD:', err.message);
     process.exit(1);
   });
+  
