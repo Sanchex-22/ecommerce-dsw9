@@ -8,9 +8,13 @@ const ejsLayouts   = require('express-ejs-layouts');
 const sequelize    = require('./config/database');
 // const { Product, Order, OrderItem } = require('./models');
 
-const productRoutes  = require('./routes/products');
-const cartRoutes     = require('./routes/cart');
-const checkoutRoutes = require('./routes/checkout');
+const productRoutes    = require('./routes/products');
+const cartRoutes       = require('./routes/cart');
+const checkoutRoutes   = require('./routes/checkout');
+const storeAuthRoutes  = require('./routes/storeAuth');
+const userAuthRoutes   = require('./routes/userAuth');
+const storeAdminRoutes = require('./routes/storeAdmin');
+const customerRoutes   = require('./routes/customer');
 
 const app  = express();
 const port = process.env.PORT || 3000;
@@ -39,15 +43,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/',         productRoutes);
-app.use('/cart',     cartRoutes);
-app.use('/checkout', checkoutRoutes);
+app.use('/',            productRoutes);
+app.use('/cart',        cartRoutes);
+app.use('/checkout',    checkoutRoutes);
+app.use('/store',       storeAuthRoutes);
+app.use('/user',        userAuthRoutes);
+app.use('/store-admin', storeAdminRoutes);
+app.use('/customer',    customerRoutes);
 
 app.use((req, res) => {
   res.status(404).render('404', { title: 'Pagina no encontrada' });
 });
 
-sequelize.sync()
+sequelize.sync({ alter: true })
   .then(() => {
     console.log('Base de datos sincronizada');
     app.listen(port, () => {

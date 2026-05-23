@@ -1,0 +1,31 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Mi Cuenta: <strong><%= user.name %></strong></h2>
+    <a href="/user/logout" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
+  </div>
+
+  <h4 class="mb-3">Mis Pedidos</h4>
+  <% if (orders.length === 0) { %>
+    <p class="text-muted">No tienes pedidos aún. <a href="/">Ir a la tienda</a></p>
+  <% } else { %>
+    <table class="table table-bordered">
+      <thead>
+        <tr><th>#</th><th>Fecha</th><th>Total</th><th>Estado</th></tr>
+      </thead>
+      <tbody>
+        <% orders.forEach(o => { %>
+          <tr>
+            <td><%= o.id %></td>
+            <td><%= new Date(o.createdAt).toLocaleDateString('es-PA') %></td>
+            <td>$<%= parseFloat(o.total).toFixed(2) %></td>
+            <td>
+              <span class="badge bg-<%= o.status === 'paid' ? 'success' : o.status === 'pending' ? 'warning' : 'danger' %>">
+                <%= o.status %>
+              </span>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

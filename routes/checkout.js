@@ -7,6 +7,6 @@ router.post('/process',             ctrl.processCheckout);       // crea orden B
 router.post('/create-paypal-order', ctrl.createPayPalOrder);    // crea orden en PayPal API
 router.post('/capture-paypal-order',ctrl.capturePayPalOrder);   // captura el pago aprobado
 router.get( '/success',             (req, res) => res.render('order-success',
-  { title: 'Pedido Completado', order: { id: req.query.orderId } }));
+  { title: 'Pedido Completado', order: { id: req.query.orderId, total: req.query.total || 0 } }));
 router.get( '/cancel',              ctrl.handleCancelPayment);
 module.exports = router;

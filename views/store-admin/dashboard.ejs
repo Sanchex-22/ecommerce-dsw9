@@ -1,0 +1,45 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Panel de Tienda: <strong><%= store.name %></strong></h2>
+    <a href="/store/logout" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card text-center p-3">
+        <h5 class="text-muted">Productos</h5>
+        <h2><%= productCount %></h2>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center p-3">
+        <h5 class="text-muted">Ventas totales</h5>
+        <h2>$<%= totalSales %></h2>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center p-3">
+        <h5 class="text-muted">Estado</h5>
+        <h2><span class="badge bg-success"><%= store.status %></span></h2>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mb-3">Mis Productos</h4>
+  <% if (products.length === 0) { %>
+    <p class="text-muted">No tienes productos aún.</p>
+  <% } else { %>
+    <table class="table table-bordered">
+      <thead><tr><th>Nombre</th><th>Precio</th><th>Stock</th></tr></thead>
+      <tbody>
+        <% products.forEach(p => { %>
+          <tr>
+            <td><%= p.name %></td>
+            <td>$<%= parseFloat(p.price).toFixed(2) %></td>
+            <td><%= p.stock %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
