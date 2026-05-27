@@ -51,6 +51,7 @@ const checkoutController = {
         phone: req.body.phone,
         total: cart.totalPrice,
         status: "pending",
+        user_id: req.session.userId || null,
       });
       for (const item of cart.items) {
         await OrderItem.create({
