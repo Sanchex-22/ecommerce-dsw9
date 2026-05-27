@@ -1,5 +1,5 @@
-// controllers/storeAdminController.js  (3/3) — Ventas y settings
-const { sequelize } = require('../config/database');
+// controllers/storeAdminController.js
+const sequelize = require('../config/database');
 const { Store, Product, Order, OrderItem } = require('../models');
 const { Op } = require('sequelize');
 
@@ -8,16 +8,24 @@ const dashboard = async (req, res) => {
   const storeId = req.session.storeId;
   const store   = await Store.findByPk(storeId);
 
-  // Ventas del mes actual
   const now        = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  // OrderItems de esta tienda en órdenes pagadas este mes
   const items = await OrderItem.findAll({
-    where: { store_id: storeId, createdAt: { [Op.gte]: monthStart } },
-    include: [{ model: Order, as: 'order' }]
+    where: { store_id: storeId },
+    include: [{
+      model: Order,
+      as: 'order',
+      where: { status: 'paid', createdAt: { [Op.gte]: monthStart } },
+      required: true
+    }]
   });
-  const monthSales  = items.reduce((s, i) => s + parseFloat(i.price) * i.quantity, 0);
-  const orderCount  = new Set(items.map(i => i.order_id)).size;
-  const productCount= await Product.count({ where: { store_id: storeId } });
+
+  const monthSales   = items.reduce((s, i) => s + parseFloat(i.price) * i.quantity, 0);
+  const orderIds     = new Set(items.map(i => i.OrderId));
+  const orderCount   = orderIds.size;
+  const productCount = await Product.count({ where: { store_id: storeId } });
 
   res.render('store-admin/dashboard', { layout: false,
     store, monthSales: monthSales.toFixed(2), orderCount, productCount
