@@ -67,7 +67,8 @@ app.use((req, res) => {
   res.status(404).render('404', { title: 'Página no encontrada' });
 });
 
-sequelize.sync({ alter: true })
+const syncOptions = process.env.NODE_ENV === 'production' ? {} : { alter: true };
+sequelize.sync(syncOptions)
   .then(() => {
     console.log('Base de datos sincronizada');
     app.listen(port, () => {
