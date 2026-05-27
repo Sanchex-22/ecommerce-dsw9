@@ -1,4 +1,3 @@
-// app.js — reemplaza el Hello World
 require('dotenv').config();
 const express      = require('express');
 const path         = require('path');
@@ -6,7 +5,7 @@ const session      = require('express-session');
 const cookieParser = require('cookie-parser');
 const ejsLayouts   = require('express-ejs-layouts');
 const sequelize    = require('./config/database');
-// const { Product, Order, OrderItem } = require('./models');
+const { attachLocals } = require('./middleware/authMiddleware');
 
 const productRoutes    = require('./routes/products');
 const cartRoutes       = require('./routes/cart');
@@ -21,9 +20,8 @@ const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.set('layout', 'layout');        // usa views/layout.ejs como plantilla base
-app.use(ejsLayouts);                // activa el sistema de layouts
-
+app.set('layout', 'layout');
+app.use(ejsLayouts);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,7 +32,11 @@ app.use(session({
   saveUninitialized: false,
   cookie: { maxAge: 3600000 }
 }));
-// Middleware: carrito vacio en sesion si no existe
+
+// Después de session: adjunta datos de sesión a res.locals
+app.use(attachLocals);
+
+// Carrito vacío si no existe
 app.use((req, res, next) => {
   if (!req.session.cart) {
     req.session.cart = { items: [], totalQty: 0, totalPrice: 0 };
@@ -66,4 +68,3 @@ sequelize.sync({ alter: true })
     console.error('Error al sincronizar BD:', err.message);
     process.exit(1);
   });
-  

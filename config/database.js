@@ -5,6 +5,9 @@ const fs   = require('fs');
 const path = require('path');
 
 function getSslConfig() {
+  if (process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1') {
+    return {};
+  }
   if (process.env.DB_SSL_CA_BASE64) {
     return { ssl: { ca: Buffer.from(process.env.DB_SSL_CA_BASE64, 'base64').toString('utf8') } };
   }
