@@ -23,8 +23,17 @@
                 <% } %>
               </span>
             </div>
-            <a href="/products/<%= product.id %>"
-               class="btn btn-primary btn-sm w-100 mt-3">Ver producto</a>
+            <div class="d-flex gap-2 mt-3">
+              <a href="/products/<%= product.id %>"
+                 class="btn btn-primary btn-sm flex-fill">Ver producto</a>
+              <% if (userSession) { %>
+              <form method="POST" action="/customer/wishlist/add/<%= product.id %>">
+                <button type="submit" class="btn btn-outline-danger btn-sm" title="Guardar en Wishlist">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </form>
+              <% } %>
+            </div>
           </div>
         </div>
       </div>

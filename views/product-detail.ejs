@@ -43,6 +43,14 @@
     </form>
     <% } %>
 
+    <% if (userSession) { %>
+    <form action="/customer/wishlist/add/<%= product.id %>" method="POST" class="d-inline">
+      <button type="submit" class="btn btn-outline-danger mt-3">
+        <i class="bi bi-heart me-1"></i> Guardar en Wishlist
+      </button>
+    </form>
+    <% } %>
+
     <a href="/products" class="btn btn-outline-primary mt-3">
       <i class="bi bi-arrow-left me-1"></i> Seguir comprando
     </a>
